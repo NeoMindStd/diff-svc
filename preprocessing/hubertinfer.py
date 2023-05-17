@@ -19,7 +19,9 @@ class Hubertencoder():
             self.dev = torch.device("cuda")
             self.hbt_model = load_model(pt_path)
         else:
+            print(pt_path)
             pt_path = list(Path(pt_path).parent.rglob('*.pt'))[0]
+            print(pt_path)
             if 'hubert_gpu' in hparams.keys():
                 self.use_gpu = hparams['hubert_gpu']
             else:

@@ -22,6 +22,8 @@ from utils.hparams import hparams, set_hparams
 from utils.pitch_utils import denorm_f0, norm_interp_f0
 from modules.diff.diffusion_V2 import GaussianDiffusionOnnx
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 if os.path.exists("chunks_temp.json"):
     os.remove("chunks_temp.json")
 
@@ -128,10 +130,10 @@ class Svc:
             spec_min=hparams['spec_min'], spec_max=hparams['spec_max'],
         )
         self.load_ckpt()
-        self.model.cuda()
+        self.model.to(device)
         hparams['hubert_gpu'] = hubert_gpu
         self.hubert = Hubertencoder(hparams['hubert_path'])
-        self.pe = PitchExtractor().cuda()
+        self.pe = PitchExtractor().to(device)
         utils.load_ckpt(self.pe, hparams['pe_ckpt'], 'model', strict=True)
         self.pe.eval()
         self.vocoder = get_vocoder_cls(hparams)()
@@ -153,8 +155,8 @@ class Svc:
         @timeit
         def diff_infer():
             outputs = self.model(
-                hubert.cuda(), spk_embed=spk_embed, mel2ph=mel2ph.cuda(), f0=f0.cuda(), uv=uv.cuda(),energy=energy.cuda(),
-                ref_mels=ref_mels.cuda(),
+                hubert.to(device), spk_embed=spk_embed, mel2ph=mel2ph.to(device), f0=f0.to(device), uv=uv.to(device),energy=energy.to(device),
+                ref_mels=ref_mels.to(device),
                 infer=True, **kwargs)
             return outputs
         outputs=diff_infer()
@@ -370,10 +372,10 @@ class SvcOnnx:
             spec_min=hparams['spec_min'], spec_max=hparams['spec_max'],
         )
         self.load_ckpt()
-        self.model.cuda()
+        self.model.to(device)
         hparams['hubert_gpu'] = hubert_gpu
         self.hubert = Hubertencoder(hparams['hubert_path'])
-        self.pe = PitchExtractor().cuda()
+        self.pe = PitchExtractor().to(device)
         utils.load_ckpt(self.pe, hparams['pe_ckpt'], 'model', strict=True)
         self.pe.eval()
         self.vocoder = get_vocoder_cls(hparams)()
