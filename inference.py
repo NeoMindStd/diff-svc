@@ -15,7 +15,7 @@ logging.getLogger('numba').setLevel(logging.WARNING)
 # model_path = 'D:/WorkSpace/diff-svc-trains_and_result/checkpoints/bakAIyaroid/model_ckpt_steps_202000.ckpt'
 # config_path = 'D:/WorkSpace/diff-svc-trains_and_result/checkpoints/bakAIyaroid/config.yaml'
 spk_id = 'dio'
-model_path = 'D:/WorkSpace/diff-svc-trains_and_result/checkpoints/dio/model_ckpt_steps_38000.ckpt'
+model_path = 'D:/WorkSpace/diff-svc-trains_and_result/checkpoints/dio/model_ckpt_steps_50000.ckpt'
 config_path = 'D:/WorkSpace/diff-svc-trains_and_result/checkpoints/dio/config.yaml'
 hubert_gpu = True
 wav_input = 'D:/WorkSpace/diff-svc-trains_and_result/target/idol/yoasobi-idol.wav'
